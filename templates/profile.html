@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container my-5 text-center">
+    <div class="col-md-5 mx-auto card p-4 shadow-sm border-0" style="border-radius: 20px;">
+        {% if messages %}
+            {% for message in messages %}
+                <div id="msg" class="alert alert-success">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-4 position-relative">
+                <img id="preview" src="{% if profile.image %}{{ profile.image.url }}{% else %}/static/images/default.png{% endif %}" 
+                     class="rounded-circle border" style="width: 150px; height: 150px; object-fit: cover;">
+                <input type="file" name="image" id="imgInput" class="d-none" onchange="document.getElementById('preview').src = window.URL.createObjectURL(this.files[0])">
+                <label for="imgInput" class="btn btn-sm btn-dark position-absolute" style="bottom: 0; right: 30%; border-radius: 50%;">📸</label>
+            </div>
+            <input type="text" name="username" class="form-control mb-3" value="{{ user.username }}">
+            <input type="email" name="email" class="form-control mb-3" value="{{ user.email }}">
+            <button type="submit" class="btn btn-block text-white" style="background: #C5A059; border-radius: 30px;">Saqlash</button>
+        </form>
+    </div>
+</div>
+<script>
+    setTimeout(() => { if(document.getElementById('msg')) document.getElementById('msg').style.display='none'; }, 3000);
+</script>
+{% endblock %}

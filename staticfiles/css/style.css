@@ -1,0 +1,106 @@
+/* Auth Wrapper - Butun fonni qoplaydi */
+.auth-wrapper {
+    min-height: calc(100vh - 140px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8f9fa; /* Yoki to'q rang xohlasangiz: #1a1a1a */
+    padding: 30px;
+}
+
+/* Auth Karta (Box) */
+.auth-box {
+    background: #ffffff;
+    width: 100%;
+    max-width: 420px;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+    border-top: 5px solid #C5A059; /* Oltin chiziq */
+}
+
+.auth-header h2 {
+    font-weight: 800;
+    font-size: 26px;
+    color: #121212;
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+.auth-subtitle {
+    color: #777;
+    font-size: 14px;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+/* Input stillari */
+.auth-input {
+    margin-bottom: 20px;
+}
+
+.auth-input label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #444;
+    margin-bottom: 8px;
+}
+
+.auth-input input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1.5px solid #eee;
+    border-radius: 10px;
+    font-size: 14px;
+    transition: 0.3s;
+    outline: none;
+    background: #fdfdfd;
+}
+
+.auth-input input:focus {
+    border-color: #C5A059;
+    background: #fff;
+    box-shadow: 0 0 10px rgba(197, 160, 89, 0.1);
+}
+
+/* Oltin rangli tugma */
+.auth-btn {
+    width: 100%;
+    background: #C5A059;
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.4s;
+    margin-top: 10px;
+}
+
+.auth-btn:hover {
+    background: #b38e4a;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(197, 160, 89, 0.3);
+}
+
+.auth-footer-text {
+    text-align: center;
+    margin-top: 25px;
+    font-size: 14px;
+    color: #666;
+}
+
+.auth-footer-text a {
+    color: #C5A059;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.error-text {
+    color: #ff4757;
+    font-size: 12px;
+    display: block;
+    margin-top: 5px;
+}

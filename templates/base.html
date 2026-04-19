@@ -1,0 +1,134 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OLD CITY SHOES</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <link rel="stylesheet" href="{% static 'css/auth.css' %}?v=123">
+
+    <!-- MAIN CSS -->
+    <link rel="stylesheet" href="{% static 'css/auth.css' %}">
+
+    <style>
+        :root {
+            --gold: #C5A059;
+            --dark: #121212;
+            --light-gray: #f8f9fa;
+            --white: #ffffff;
+        }
+
+        body {
+            background-color: var(--light-gray);
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+        }
+
+        .navbar {
+            background: var(--dark) !important;
+            border-bottom: 2px solid var(--gold);
+        }
+
+        .logo-text {
+            font-size: 22px;
+            font-weight: 800;
+            text-decoration: none !important;
+        }
+
+        .nav-right-icons {
+            display: flex;
+            align-items: center;
+        }
+
+        .cart-icon-wrapper {
+            position: relative;
+            color: white;
+            margin-right: 20px;
+        }
+
+        .cart-badge {
+            background: var(--gold);
+            border-radius: 50%;
+            padding: 2px 7px;
+            font-size: 11px;
+            position: absolute;
+            top: -8px;
+            right: -10px;
+        }
+
+        .btn-gold {
+            background: var(--gold);
+            color: white;
+            border-radius: 8px;
+            padding: 6px 15px;
+            margin-left: 10px;
+        }
+
+        .btn-logout {
+            border: 1px solid red;
+            color: red;
+            padding: 5px 10px;
+            border-radius: 8px;
+            margin-left: 10px;
+        }
+
+        .main-content {
+            min-height: calc(100vh - 140px);
+        }
+
+        footer {
+            background: var(--dark);
+            color: #aaa;
+            text-align: center;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+        <a class="navbar-brand logo-text" href="{% url 'index' %}">
+            <span style="color: var(--gold);">OLD CITY</span>
+            <span style="color: white;">SHOES</span>
+        </a>
+
+        <div class="ml-auto nav-right-icons">
+
+            <a href="{% url 'cart_detail' %}" class="cart-icon-wrapper">
+                <i class="fas fa-shopping-bag"></i>
+                <span class="cart-badge">{{ cart|length }}</span>
+            </a>
+
+            {% if user.is_authenticated %}
+                <span style="color:white;">{{ user.username }}</span>
+                <a href="{% url 'account_logout' %}" class="btn-logout">Chiqish</a>
+            {% else %}
+                <a href="{% url 'account_login' %}" class="text-white mr-2">Kirish</a>
+                <a href="{% url 'account_signup' %}" class="btn-gold">Ro'yxatdan o'tish</a>
+            {% endif %}
+
+        </div>
+    </div>
+</nav>
+
+<div class="main-content">
+    {% block content %}{% endblock %}
+</div>
+
+<footer>
+    <p>© 2026 OLD CITY SHOES</p>
+</footer>
+
+</body>
+</html>

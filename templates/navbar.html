@@ -1,0 +1,18 @@
+{% if user.is_authenticated %}
+    <div class="nav-user-box">
+        <div class="nav-avatar">
+            {{ user.username|first|upper }}
+        </div>
+        <div class="nav-info">
+            <span class="nav-status">● Onlayn</span>
+            <span class="nav-name">{{ user.username }}</span>
+        </div>
+        <a href="{% url 'account_logout' %}" class="nav-logout">
+            <i class="fas fa-sign-out-alt"></i> Chiqish
+        </a>
+    </div>
+{% else %}
+    <a href="{% url 'account_login' %}" class="btn btn-primary btn-sm" style="border-radius: 20px; padding: 5px 20px;">
+        Kirish
+    </a>
+{% endif %}

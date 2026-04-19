@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mb-5 mt-3">
+    <div class="jumbotron jumbotron-fluid shadow-lg text-white d-flex align-items-center" 
+         style="background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=2012&auto=format&fit=crop'); 
+                background-size: cover; background-position: center; border-radius: 25px; min-height: 350px;">
+        <div class="container text-center">
+            <h1 class="display-4 font-weight-bold mb-3" style="letter-spacing: 2px;">OLD CITY MARKET</h1>
+            <p class="lead mb-4">Sifatli va qulay poyabzallar — Sizning qadamingiz, bizning ishonchimiz.</p>
+            <a href="#products-section" class="btn btn-warning btn-lg px-5 py-2 shadow" style="border-radius: 50px; font-weight: bold;">HOZIR XARID QILISH</a>
+        </div>
+    </div>
+</div>
+
+<div class="container" id="products-section">
+    <div class="row">
+        <div class="col-md-3 mb-4">
+            <h5 class="font-weight-bold mb-3">Kategoriyalar</h5>
+            <div class="list-group shadow-sm" style="border-radius: 15px; overflow: hidden;">
+                <a href="{% url 'index' %}" class="list-group-item list-group-item-action {% if not selected_category %}active bg-dark border-dark text-white{% endif %}">
+                    Barchasi
+                </a>
+                {% for category in categories %}
+                    <a href="{% url 'index' %}?category={{ category.slug }}" 
+                       class="list-group-item list-group-item-action {% if selected_category.slug == category.slug %}active bg-dark border-dark text-white{% endif %}">
+                        {{ category.name }}
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="col-md-9">
+            <div class="row">
+                {% for product in products %}
+                <div class="col-6 col-lg-4 mb-4">
+                    <div class="card h-100 border-0 shadow-sm" style="border-radius: 20px; transition: 0.3s;">
+                        <a href="{% url 'product_detail' product.id %}">
+                            <img src="{{ product.image.url }}" class="card-img-top p-3" style="height: 180px; object-fit: contain;">
+                        </a>
+                        <div class="card-body text-center p-3">
+                            <h6 class="font-weight-bold mb-1 text-truncate">{{ product.name }}</h6>
+                            <p class="font-weight-bold mb-3" style="color: #C5A059;">{{ product.price }} so'm</p>
+                            <a href="{% url 'cart_add' product.id %}" class="btn btn-dark btn-block btn-sm py-2" style="border-radius: 10px;">
+                                SAVATGA
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col-12 text-center py-5">
+                    <p class="text-muted">Bu kategoriyada mahsulotlar topilmadi.</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
