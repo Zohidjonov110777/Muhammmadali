@@ -3,6 +3,19 @@ from django.contrib.auth.decorators import login_required
 from .models import Product, Category, Profile
 from .cart import Cart
 from .models import Order, Product
+import requests
+from httpx import post, get
+
+TELEGRAM_BOT_TOKEN = '8546684735:AAFPhO_cxCLi80mlir1fzpf5hrP3isSdfQI'
+
+def send_message(chat_id, message):
+    url = f'https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage'
+    params = {
+        'chat_id': chat_id,
+        'text': message
+    }
+    response = get(url, params=params)
+    print(response.text, response.status_code)
 
 
 

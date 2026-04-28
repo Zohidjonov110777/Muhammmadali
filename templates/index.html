@@ -1,14 +1,90 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container mb-5 mt-3">
+<style>
+    /* Maxsus CSS uslublari */
+    .jumbotron {
+        transition: transform 0.4s ease;
+    }
+
+    /* Kategoriya menyusi dizayni */
+    .category-list .list-group-item {
+        border: none;
+        padding: 12px 20px;
+        margin-bottom: 5px;
+        border-radius: 10px !important;
+        transition: all 0.3s;
+    }
+    .category-list .list-group-item.active {
+        background: #212529 !important;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    /* Karta (Card) dizayni */
+    .product-card {
+        border-radius: 20px !important;
+        overflow: hidden;
+        transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+        border: 1px solid #f0f0f0 !important;
+    }
+    .product-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.1) !important;
+    }
+
+    /* Rasm konteyneri - Kattaroq va sifatliroq */
+    .img-container {
+        position: relative;
+        height: 250px; /* Rasm balandligi oshirildi */
+        overflow: hidden;
+        background-color: #f8f9fa;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .product-img {
+        max-height: 100%;
+        max-width: 100%;
+        object-fit: cover; /* Yoki 'contain' poyabzal shakliga qarab */
+        transition: transform 0.5s ease;
+    }
+    .product-card:hover .product-img {
+        transform: scale(1.1);
+    }
+
+    /* Narx va tugmalar */
+    .price-text {
+        color: #d4af37;
+        font-size: 1.2rem;
+        font-weight: 700;
+    }
+    .btn-buy {
+        border-radius: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: 0.3s;
+    }
+    .btn-buy:hover {
+        background-color: #000;
+        color: #fff;
+    }
+
+    @media (max-width: 768px) {
+        .img-container {
+            height: 180px; /* Mobil qurilmalar uchun moslashtirish */
+        }
+    }
+</style>
+
+<div class="container mb-5 mt-4">
     <div class="jumbotron jumbotron-fluid shadow-lg text-white d-flex align-items-center" 
-         style="background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=2012&auto=format&fit=crop'); 
-                background-size: cover; background-position: center; border-radius: 25px; min-height: 350px;">
+         style="background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=2012&auto=format&fit=crop'); 
+                background-size: cover; background-position: center; border-radius: 30px; min-height: 400px;">
         <div class="container text-center">
-            <h1 class="display-4 font-weight-bold mb-3" style="letter-spacing: 2px;">OLD CITY MARKET</h1>
-            <p class="lead mb-4">Sifatli va qulay poyabzallar — Sizning qadamingiz, bizning ishonchimiz.</p>
-            <a href="#products-section" class="btn btn-warning btn-lg px-5 py-2 shadow" style="border-radius: 50px; font-weight: bold;">HOZIR XARID QILISH</a>
+            <h1 class="display-3 font-weight-bold mb-3">OLD CITY MARKET</h1>
+            <p class="lead mb-4" style="font-size: 1.4rem; opacity: 0.9;">Sifatli va qulay poyabzallar — Sizning qadamingiz, bizning ishonchimiz.</p>
+            <a href="#products-section" class="btn btn-warning btn-lg px-5 py-3 shadow-lg btn-buy">HOZIR XARID QILISH</a>
         </div>
     </div>
 </div>
@@ -16,14 +92,14 @@
 <div class="container" id="products-section">
     <div class="row">
         <div class="col-md-3 mb-4">
-            <h5 class="font-weight-bold mb-3">Kategoriyalar</h5>
-            <div class="list-group shadow-sm" style="border-radius: 15px; overflow: hidden;">
-                <a href="{% url 'index' %}" class="list-group-item list-group-item-action {% if not selected_category %}active bg-dark border-dark text-white{% endif %}">
-                    Barchasi
+            <h5 class="font-weight-bold mb-4 ml-2">Kategoriyalar</h5>
+            <div class="list-group category-list shadow-sm">
+                <a href="{% url 'index' %}" class="list-group-item list-group-item-action {% if not selected_category %}active{% endif %}">
+                    <i class="fas fa-th-large mr-2"></i> Barchasi
                 </a>
                 {% for category in categories %}
                     <a href="{% url 'index' %}?category={{ category.slug }}" 
-                       class="list-group-item list-group-item-action {% if selected_category.slug == category.slug %}active bg-dark border-dark text-white{% endif %}">
+                       class="list-group-item list-group-item-action {% if selected_category.slug == category.slug %}active{% endif %}">
                         {{ category.name }}
                     </a>
                 {% endfor %}
@@ -33,23 +109,31 @@
         <div class="col-md-9">
             <div class="row">
                 {% for product in products %}
-                <div class="col-6 col-lg-4 mb-4">
-                    <div class="card h-100 border-0 shadow-sm" style="border-radius: 20px; transition: 0.3s;">
-                        <a href="{% url 'product_detail' product.id %}">
-                            <img src="{{ product.image.url }}" class="card-img-top p-3" style="height: 180px; object-fit: contain;">
-                        </a>
-                        <div class="card-body text-center p-3">
-                            <h6 class="font-weight-bold mb-1 text-truncate">{{ product.name }}</h6>
-                            <p class="font-weight-bold mb-3" style="color: #C5A059;">{{ product.price }} so'm</p>
-                            <a href="{% url 'cart_add' product.id %}" class="btn btn-dark btn-block btn-sm py-2" style="border-radius: 10px;">
-                                SAVATGA
+                <div class="col-sm-6 col-lg-4 mb-4">
+                    <div class="card h-100 product-card border-0">
+                        <div class="img-container">
+                            <a href="{% url 'product_detail' product.id %}">
+                                <img src="{{ product.image.url }}" class="product-img" alt="{{ product.name.title }}">
+                            </a>
+                        </div>
+                        
+                        <div class="card-body d-flex flex-column justify-content-between p-3">
+                            <div>
+                                <h6 class="font-weight-bold text-dark mb-2" style="font-size: 1.1rem;">{{ product.name }}</h6>
+                                <p class="price-text mb-3">{{ product.price }} so'm</p>
+                            </div>
+                            <a href="{% url 'cart_add' product.id %}" class="btn btn-dark btn-block btn-buy py-2">
+                                <i class="fas fa-shopping-cart mr-2"></i> SAVATGA
                             </a>
                         </div>
                     </div>
                 </div>
                 {% empty %}
                 <div class="col-12 text-center py-5">
-                    <p class="text-muted">Bu kategoriyada mahsulotlar topilmadi.</p>
+                    <div class="p-5 bg-light style='border-radius: 20px;'">
+                        <i class="fas fa-box-open fa-3x text-muted mb-3"></i>
+                        <p class="text-muted">Hozircha bu bo'limda mahsulotlar mavjud emas.</p>
+                    </div>
                 </div>
                 {% endfor %}
             </div>
