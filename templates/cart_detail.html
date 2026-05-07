@@ -1,123 +1,79 @@
 {% extends 'base.html' %}
-{% load static %}
-
 {% block content %}
-<style>
-    .cart-wrapper { background-color: #fcfcfc; padding: 50px 0; }
-    .cart-item-card {
-        background: #fff;
-        border-radius: 12px;
-        border: 1px solid #eee;
-        transition: 0.3s;
-    }
-    .prod-img { width: 80px; height: 80px; object-fit: cover; border-radius: 8px; }
-    .qty-control {
-        display: flex;
-        align-items: center;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        overflow: hidden;
-        width: fit-content;
-    }
-    .qty-btn {
-        background: #f8f9fa;
-        border: none;
-        padding: 5px 12px;
-        font-size: 18px;
-        cursor: pointer;
-    }
-    .qty-btn:hover { background: #e9ecef; }
-    .qty-val { width: 40px; text-align: center; border: none; font-weight: 600; background: #fff; }
-    .summary-card {
-        background: #fff;
-        border-radius: 15px;
-        padding: 25px;
-        border: 1px solid #eee;
-        position: sticky;
-        top: 20px;
-    }
-    .btn-main {
-        background: #28a745;
-        color: white;
-        padding: 12px;
-        border-radius: 8px;
-        width: 100%;
-        display: block;
-        text-align: center;
-        text-decoration: none;
-        font-weight: bold;
-    }
-</style>
+<div class="container mt-5" style="max-width: 900px;">
+    <h3 class="fw-bold mb-4">Sizning tanlagan mahsulotlaringiz</h3>
 
-<div class="cart-wrapper">
-    <div class="container">
-        <h3 class="mb-4 fw-bold">Savatcha</h3>
-        <div class="row">
-            <div class="col-lg-8">
-                {% if cart %}
-                    {% for item in cart %}
-                    <div class="cart-item-card p-3 mb-3">
-                        <div class="row align-items-center">
-                            <div class="col-3 col-md-2 text-center">
-                                {% if item.product.image %}
-                                    <img src="{{ item.product.image.url }}" class="prod-img">
-                                {% endif %}
-                            </div>
-                            <div class="col-9 col-md-4">
-                                <h6 class="mb-1 fw-bold">{{ item.product.name }}</h6>
-                                <p class="text-muted small mb-0">{{ item.price }} so'm</p>
-                            </div>
-                            <div class="col-6 col-md-3 mt-3 mt-md-0">
-                                <div class="qty-control mx-auto mx-md-0">
-                                    <!-- AYIRISH TUGMASI -->
-                                    <form action="{% url 'cart_add' item.product.id %}" method="post" style="display:inline;">
-                                        {% csrf_token %}
-                                        <input type="hidden" name="action" value="decrease">
-                                        <button type="submit" class="qty-btn" {% if item.quantity <= 1 %}disabled{% endif %}>-</button>
-                                    </form>
-                                    
-                                    <input type="text" class="qty-val" value="{{ item.quantity }}" readonly>
-                                    
-                                    <!-- QO'SHISH TUGMASI -->
-                                    <form action="{% url 'cart_add' item.product.id %}" method="post" style="display:inline;">
-                                        {% csrf_token %}
-                                        <button type="submit" class="qty-btn">+</button>
-                                    </form>
-                                </div>
-                            </div>
-                            <div class="col-4 col-md-2 text-end mt-3 mt-md-0">
-                                <span class="fw-bold text-dark">{{ item.total_price }} so'm</span>
-                            </div>
-                            <div class="col-2 col-md-1 text-end mt-3 mt-md-0">
-                                <a href="{% url 'cart_remove' item.product.id %}" class="text-danger">X</a>
-                            </div>
+    {% if cart %}
+        {% for item in cart %}
+        <div class="card mb-3 shadow-sm border-0" style="border-radius: 20px; padding: 15px;">
+            <div class="row align-items-center g-0">
+                <div class="col-2 text-center">
+                    {% if item.product.image %}
+                        <img src="{{ item.product.image.url }}" class="img-fluid rounded" style="max-height: 80px; object-fit: contain;">
+                    {% endif %}
+                </div>
+
+                <div class="col-4 ps-3">
+                    <h5 class="mb-1 fw-bold" style="color: #333;">{{ item.product.name }}</h5>
+                    <p class="mb-0 text-muted">{{ item.product.price|floatformat:0 }} so'm</p>
+                </div>
+
+                <div class="col-3">
+                    <div class="d-flex align-items-center justify-content-center bg-light rounded-pill p-1 border">
+                        <form action="{% url 'cart_add' item.product.id %}" method="post" class="m-0">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="decrease">
+                            <button type="submit" class="btn btn-sm fw-bold border-0" {% if item.quantity <= 1 %}disabled{% endif %}>−</button>
+                        </form>
+                        
+                        <div class="px-3 fw-bold bg-white rounded-pill py-1 shadow-sm mx-1" style="min-width: 40px; text-align: center;">
+                            {{ item.quantity }}
                         </div>
+                        
+                        <form action="{% url 'cart_add' item.product.id %}" method="post" class="m-0">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm fw-bold border-0">+</button>
+                        </form>
                     </div>
-                    {% endfor %}
-                {% else %}
-                    <div class="text-center py-5">
-                        <p>Savatchangiz bo'sh</p>
-                        <a href="{% url 'index' %}" class="btn btn-primary btn-sm">Xaridni boshlash</a>
-                    </div>
-                {% endif %}
-            </div>
+                </div>
 
-            <div class="col-lg-4">
-                <div class="summary-card">
-                    <h5 class="fw-bold mb-4">Umumiy hisob</h5>
-                    <div class="d-flex justify-content-between mb-2">
-                        <span>Mahsulotlar turi:</span>
-                        <span class="fw-bold">{{ cart|length }} xil</span>
-                    </div>
-                    <hr>
-                    <div class="d-flex justify-content-between mb-4">
-                        <span class="h5 fw-bold">Jami:</span>
-                        <span class="h5 fw-bold text-success">{{ cart.get_total_price }} so'm</span>
-                    </div>
-                    <a href="{% url 'checkout' %}" class="btn-main">Buyurtma berish</a>
+                <div class="col-2 text-center">
+                    <h5 class="mb-0 fw-bold">{{ item.total_price|floatformat:0 }}</h5>
+                    <small class="text-muted">so'm</small>
+                </div>
+
+                <div class="col-1 text-end">
+                    <a href="{% url 'cart_remove' item.product.id %}" class="text-danger text-decoration-none fw-bold p-2" style="font-size: 1.2rem;">✕</a>
                 </div>
             </div>
         </div>
-    </div>
+        {% endfor %}
+
+        <div class="mt-4 p-4 card border-0 shadow-sm" style="border-radius: 20px;">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <span class="text-muted">Umumiy summa:</span>
+                    <h2 class="fw-bold text-success mb-0">{{ cart.get_total_price|floatformat:0 }} so'm</h2>
+                </div>
+                <a href="{% url 'checkout' %}" class="btn btn-dark btn-lg px-5" style="border-radius: 15px;">Buyurtma berish</a>
+            </div>
+        </div>
+    {% else %}
+        <div class="text-center py-5">
+            <i class="bi bi-cart-x h1 text-muted"></i>
+            <h4 class="text-muted mt-3">Savatchangiz hozircha bo'sh</h4>
+            <a href="{% url 'index' %}" class="btn btn-primary mt-3">Do'konga qaytish</a>
+        </div>
+    {% endif %}
 </div>
+
+<style>
+    .card:hover {
+        transform: translateY(-2px);
+        transition: 0.3s;
+    }
+    .btn-outline-secondary {
+        border-color: #eee;
+    }
+</style>
 {% endblock %}

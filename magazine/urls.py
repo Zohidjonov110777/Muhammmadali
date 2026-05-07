@@ -1,5 +1,4 @@
 from django.urls import path
-from django.contrib.auth import views as auth_views
 from . import views
 
 urlpatterns = [
@@ -11,7 +10,4 @@ urlpatterns = [
     path('checkout/', views.checkout, name='checkout'),
     path('profile/', views.profile_detail, name='profile_detail'),
     path('profile/edit/', views.edit_profile, name='edit_profile'),
-    
-    # Logoutdan keyin stil yo'qolmasligi uchun asosiy sahifaga yo'naltiramiz
-    path('logout/', auth_views.LogoutView.as_view(next_page='index'), name='logout'),
 ]

@@ -1,31 +1,57 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="container py-5">
+<div class="container mt-4">
     <div class="row">
-        <div class="col-md-6 mb-4 text-center">
-            <div class="card border-0 shadow-sm p-3" style="border-radius: 20px;">
-                <img src="{{ product.image.url }}" class="img-fluid" style="max-height: 450px; object-fit: contain;">
-            </div>
+        <div class="col-md-6">
+            <img src="{{ product.image.url }}" class="img-fluid rounded shadow">
         </div>
         <div class="col-md-6">
-            <h1 class="font-weight-bold">{{ product.name }}</h1>
-            <p class="badge badge-warning p-2 px-3">{{ product.category.name }}</p>
-            
-            <div class="d-flex align-items-center my-4">
-                <h2 class="text-dark font-weight-bold mb-0">{{ product.price }} so'm</h2>
+            <h1 class="fw-bold">{{ product.name }}</h1>
+            <div class="my-3">
                 {% if product.old_price %}
-                    <span class="badge badge-danger ml-3 p-2">
-                        -{{ product.get_discount_amount }} so'm tejamkorlik
-                    </span>
+                    <span class="text-muted text-decoration-line-through h5">{{ product.old_price }} so'm</span>
+                    <span class="text-danger fw-bold h2 ms-2">{{ product.price }} so'm</span>
+                    <span class="badge bg-danger ms-2">-{{ product.discount_percent }}%</span>
+                {% else %}
+                    <span class="fw-bold h2">{{ product.price }} so'm</span>
                 {% endif %}
             </div>
-
-            <p class="text-muted"><b>OLD CITY SHOES</b> brendidan yuqori sifatli va qulay model. Har qanday sharoitda o'zini oqlaydi.</p>
-            <hr>
-            <a href="{% url 'cart_add' product.id %}" class="btn btn-dark btn-block btn-lg py-3 shadow-lg" style="border-radius: 15px;">
-                <i class="fas fa-shopping-bag mr-2"></i> SAVATGA QO'SHISH
-            </a>
+            <p class="text-secondary">{{ product.description }}</p>
+            <form action="{% url 'cart_add' product.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-success btn-lg w-100 mt-3">Savatga qo'shish</button>
+            </form>
         </div>
     </div>
+
+    <div class="mt-5 pt-5 border-top">
+        <h3>Mijozlar fikri ({{ reviews.count }})</h3>
+        {% for review in reviews %}
+            <div class="border-bottom py-3">
+                <strong>{{ review.user.username }}</strong>
+                <span class="text-warning ms-2">★ {{ review.rating }}</span>
+                <p class="mt-2 mb-1">{{ review.comment }}</p>
+                <small class="text-muted">{{ review.created_at|date:"d.m.Y" }}</small>
+            </div>
+        {% empty %}
+            <p class="text-muted">Hali sharhlar yo'q.</p>
+        {% endfor %}
+
+        {% if user.is_authenticated %}
+            <form method="post" class="mt-4 p-4 bg-light rounded shadow-sm">
+                {% csrf_token %}
+                <h5>Fikr qoldiring</h5>
+                <select name="rating" class="form-select mb-2 w-25">
+                    <option value="5">5 ★</option>
+                    <option value="4">4 ★</option>
+                    <option value="3">3 ★</option>
+                    <option value="2">2 ★</option>
+                    <option value="1">1 ★</option>
+                </select>
+                <textarea name="comment" class="form-control mb-2" placeholder="Sizning fikringiz..." required></textarea>
+                <button type="submit" class="btn btn-dark">Yuborish</button>
+            </form>
+        {% endif %}
+    </div>
 </div>
-{% endblock %}  
+{% endblock %}
