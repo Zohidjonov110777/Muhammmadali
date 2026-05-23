@@ -1,4 +1,7 @@
 {% extends 'base.html' %}
+<!-- Sonlarni formatlash uchun humanize modulini yuklaymiz -->
+{% load humanize %}
+
 {% block content %}
 <div class="container mt-5" style="max-width: 900px;">
     <h3 class="fw-bold mb-4">Sizning tanlagan mahsulotlaringiz</h3>
@@ -15,7 +18,8 @@
 
                 <div class="col-4 ps-3">
                     <h5 class="mb-1 fw-bold" style="color: #333;">{{ item.product.name }}</h5>
-                    <p class="mb-0 text-muted">{{ item.product.price|floatformat:0 }} so'm</p>
+                    <!-- XATOSIZ VARIANTI: |replace_commas olib tashlandi -->
+                    <p class="mb-0 text-muted">{{ item.product.price|floatformat:0|intcomma }} so'm</p>
                 </div>
 
                 <div class="col-3">
@@ -38,7 +42,8 @@
                 </div>
 
                 <div class="col-2 text-center">
-                    <h5 class="mb-0 fw-bold">{{ item.total_price|floatformat:0 }}</h5>
+                    <!-- XATOSIZ VARIANTI: |replace_commas olib tashlandi -->
+                    <h5 class="mb-0 fw-bold">{{ item.total_price|floatformat:0|intcomma }}</h5>
                     <small class="text-muted">so'm</small>
                 </div>
 
@@ -53,7 +58,8 @@
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <span class="text-muted">Umumiy summa:</span>
-                    <h2 class="fw-bold text-success mb-0">{{ cart.get_total_price|floatformat:0 }} so'm</h2>
+                    <!-- XATOSIZ VARIANTI: |replace_commas olib tashlandi -->
+                    <h2 class="fw-bold text-success mb-0">{{ cart.get_total_price|floatformat:0|intcomma }} so'm</h2>
                 </div>
                 <a href="{% url 'checkout' %}" class="btn btn-dark btn-lg px-5" style="border-radius: 15px;">Buyurtma berish</a>
             </div>

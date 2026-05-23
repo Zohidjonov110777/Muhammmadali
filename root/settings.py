@@ -18,8 +18,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.sites', # Allauth uchun shart
-
+    'django.contrib.sites',
+     'django.contrib.humanize', 
     # Allauth applar
     'allauth',
     'allauth.account',
@@ -109,3 +109,11 @@ ACCOUNT_EMAIL_VERIFICATION = 'none'
 LOGIN_URL = 'login'
 
 SITE_ID = 1
+
+# 12. TELEGRAM BOT SOZLAMALARI
+TELEGRAM_BOT_TOKEN = '8546684735:AAEMiY-mFqsG7yhcLSXshp1Lb9nCDL0IVI4'
+TELEGRAM_CHAT_ID = '5287906523'
+
+
+USE_THOUSAND_SEPARATOR = True
+THOUSAND_SEPARATOR = '.'

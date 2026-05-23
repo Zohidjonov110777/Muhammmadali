@@ -2,6 +2,7 @@
 
 {% block content %}
 <div class="auth-wrapper">
+    <!-- 1. Muvaffaqiyatli yakunlash kartasi (Dastlab yashirin turadi) -->
     <div id="success-animation" class="success-card" style="display: none;">
         <div class="check-container">
             <i class="fas fa-check-circle"></i>
@@ -11,6 +12,7 @@
         <a href="{% url 'index' %}" class="auth-btn" style="text-decoration: none; display: inline-block;">OK</a>
     </div>
 
+    <!-- 2. Buyurtma berish formasi -->
     <div class="auth-box" id="checkout-form-box">
         <h2>Tasdiqlash</h2>
         <form id="order-form" method="POST" class="auth-form">
@@ -28,21 +30,34 @@
                 <input type="text" name="address" required>
             </div>
             
-            <button type="button" onclick="showSuccess()" class="auth-btn">BUYURTMANI TASDIQLASH</button>
+            <!-- Tugma turi 'button' bo'lib qoladi, lekin JS funksiyamiz formani boshqaradi -->
+            <button type="button" onclick="handleOrderSubmit()" class="auth-btn">BUYURTMANI TASDIQLASH</button>
         </form>
     </div>
 </div>
 
 <script>
-function showSuccess() {
-    // 1. Formani yashiramiz
+function handleOrderSubmit() {
+    const form = document.getElementById('order-form');
+
+    // HTML5 validatsiyasini tekshirish (ism, tel yoki manzil bo'sh bo'lsa ogohlantiradi)
+    if (!form.checkValidity()) {
+        form.reportValidity();
+        return; // Agar majburiy maydonlar to'ldirilmagan bo'lsa, kod shu yerda to'xtaydi
+    }
+
+    // 1. Forma qutisini ekrandan yashiramiz
     document.getElementById('checkout-form-box').style.display = 'none';
     
-    // 2. Animatsiyani ko'rsatamiz
+    // 2. Animatsiya yoki muvaffaqiyat oynasini ko'rsatamiz
     const successBox = document.getElementById('success-animation');
     successBox.style.display = 'block';
     
-
+    // 3. Formani Django serveriga yuboramiz (POST so'rovi ketadi)
+    // Foydalanuvchi animatsiyani ko'rishi uchun 1 soniya (1000 ms) kutib, keyin yuboradi
+    setTimeout(function() {
+        form.submit();
+    }, 1000);
 }
 </script>
 {% endblock %}

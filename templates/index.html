@@ -50,6 +50,13 @@
         </div>
     </div>
 
+<form method="GET" action="{% url 'search' %}" class="search-form">
+    <input type="text" name="q" placeholder="Qidirish..." class="search-input">
+    <button type="submit" class="search-btn">
+        🔍
+    </button>
+</form>
+
     <div class="row g-4 mb-5">
         {% for product in products %}
         <div class="col-6 col-md-4 col-lg-3">
@@ -103,6 +110,8 @@
     </div>
 </div>
 
+
+
 <style>
     body { background-color: #f8f9fa; font-family: 'Poppins', sans-serif; }
     .product-card:hover {
@@ -126,5 +135,34 @@
     .btn-danger { background-color: #e74c3c; border: none; }
     .btn-danger:hover { background-color: #c0392b; }
     .btn-outline-dark:hover { background-color: #343a40; color: #fff; }
+</style>
+
+<style>
+.search-form{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin:20px;
+}
+
+.search-input{
+    width:250px;
+    padding:10px 15px;
+    border:none;
+    border-radius:10px;
+    outline:none;
+    background:#f1f1f1;
+    font-size:16px;
+}
+
+.search-btn{
+    padding:10px 15px;
+    border:none;
+    border-radius:10px;
+    background:black;
+    color:white;
+    cursor:pointer;
+    font-size:16px;
+}
 </style>
 {% endblock %}
